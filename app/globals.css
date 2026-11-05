@@ -1,26 +1,124 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8fafc;
+  --heading-text: #0f172a;
+  --body-text: #475569;
+  --muted-text: #475569;
+  --primary: #6366f1;
+  --card-bg: #ffffff;
+  --card-border: #e2e8f0;
+
+  --cms-pill: #e0e7ff;
+  --cms-pill-fg: #4338ca;
+  --cms-badge: #c7d2fe;
+  --cms-badge-fg: #3730a3;
+  --cms-bg: #eff6ff;
+
+  --hosting-pill: #fff7ed;
+  --hosting-pill-fg: #9a3412;
+  --hosting-badge: #fed7aa;
+  --hosting-badge-fg: #9f1239;
+  --hosting-bg: #fffbeb;
+
+  --analytics-pill: #f3e8ff;
+  --analytics-pill-fg: #6b21a8;
+  --analytics-badge: #e9d5ff;
+  --analytics-badge-fg: #7e22ce;
+  --analytics-bg: #faf5ff;
+
+  --framework-pill: #ecfdf5;
+  --framework-pill-fg: #166534;
+  --framework-badge: #a7f3d0;
+  --framework-badge-fg: #15803d;
+  --framework-bg: #f0fdf4;
+
+  --upgrade-panel-bg: #ffffff;
+  --upgrade-panel-border: rgba(99, 102, 241, 0.2);
+
+  --cwebvital-pill: #dcfce7;
+  --cwebvital-pill-fg: #166534;
+  --arch-pill: #dbeafe;
+  --arch-pill-fg: #1e40af;
+  --seo-pill: #f3e8ff;
+  --seo-pill-fg: #6b21a8;
+
+  --high-pill: #dcfce7;
+  --high-pill-fg: #166534;
+  --high-text: #15803d;
+  --high-border: #86efac;
+
+  --medium-pill: #fef9c3;
+  --medium-pill-fg: #854d0e;
+  --medium-text: #854d0e;
+  --medium-border: #bef264;
+
+  --low-pill: #fed7aa;
+  --low-pill-fg: #9a3412;
+  --low-text: #9a3412;
+  --low-border: #fdba74;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+[data-theme="dark"] {
+  --background: #0f172a;
+  --heading-text: #f1f5f9;
+  --body-text: #cbd5e1;
+  --muted-text: #cbd5e1;
+  --primary: #818cf8;
+  --card-bg: #1e293b;
+  --card-border: #334155;
+
+  --cms-pill: #6366f1;
+  --cms-pill-fg: #e0e7ff;
+  --cms-badge: #4338ca;
+  --cms-badge-fg: #c7d2fe;
+  --cms-bg: #1e1b4b;
+
+  --hosting-pill: #f59e0b;
+  --hosting-pill-fg: #fef3c7;
+  --hosting-badge: #9a3412;
+  --hosting-badge-fg: #fed7aa;
+  --hosting-bg: #422006;
+
+  --analytics-pill: #a855f7;
+  --analytics-pill-fg: #f3e8ff;
+  --analytics-badge: #7e22ce;
+  --analytics-badge-fg: #e9d5ff;
+  --analytics-bg: #3b0764;
+
+  --framework-pill: #10b981;
+  --framework-pill-fg: #ecfdf5;
+  --framework-badge: #166534;
+  --framework-badge-fg: #a7f3d0;
+  --framework-bg: #052e16;
+
+  --upgrade-panel-bg: #1e293b;
+  --upgrade-panel-border: rgba(129, 140, 248, 0.3);
+
+  --cwebvital-pill: #10b981;
+  --cwebvital-pill-fg: #dcfce7;
+  --arch-pill: #1e40af;
+  --arch-pill-fg: #bfdbfe;
+  --seo-pill: #a855f7;
+  --seo-pill-fg: #f3e8ff;
+
+  --high-pill: #10b981;
+  --high-pill-fg: #ecfdf5;
+  --high-text: #6ee7b7;
+  --high-border: #34d399;
+
+  --medium-pill: #f59e0b;
+  --medium-pill-fg: #fef3c7;
+  --medium-text: #fde68a;
+  --medium-border: #fbbf24;
+
+  --low-pill: #f97316;
+  --low-pill-fg: #fee2e2;
+  --low-text: #fdba74;
+  --low-border: #fb923c;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+html, body {
+  margin: 0;
+  padding: 0;
 }
