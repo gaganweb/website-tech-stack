@@ -1,0 +1,11 @@
+▲ Next.js 16.4.3 (Turbopack)
+✓ Running next.config.ts took 43ms
+- Cache Components enabled
+- Partial Prefetching enabled
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 231ms
+  Running TypeScript ...
+lib/analyzer.ts(436,37): error TS2339: Property 'timestamp' does not exist on type 'AnalyzeResult'.
+Failed to type check.
+

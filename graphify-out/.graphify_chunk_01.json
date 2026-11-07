@@ -1,0 +1,307 @@
+{
+  "nodes": [
+    {
+      "id": "agents_nextjs_not_the_nextjs",
+      "label": "This is NOT the Next.js you know",
+      "file_type": "rationale",
+      "source_file": "D:\\website-scanner\\AGENTS.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "agents_next_api_changes",
+      "label": "This version has breaking changes — APIs, conventions, and file structure may all differ from your training data",
+      "file_type": "rationale",
+      "source_file": "D:\\website-scanner\\AGENTS.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "agents_read_node_modules_guide",
+      "label": "Read the relevant guide in node_modules/next/dist/docs/",
+      "file_type": "rationale",
+      "source_file": "D:\\website-scanner\\AGENTS.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "agents_heed_deprecation",
+      "label": "Heed deprecation notices",
+      "file_type": "rationale",
+      "source_file": "D:\\website-scanner\\AGENTS.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "agents_verify_generate_agent_files",
+      "label": "Verify at node_modules/next/dist/server/lib/generate-agent-files.js (written and re-added by next dev)",
+      "file_type": "rationale",
+      "source_file": "D:\\website-scanner\\AGENTS.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "agents_removing_block_recreates_diff",
+      "label": "Removing it from a diff only re-creates the uncommitted change",
+      "file_type": "rationale",
+      "source_file": "D:\\website-scanner\\AGENTS.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "agents_committing_keeps_tree_clean",
+      "label": "Committing it with your work keeps the tree clean",
+      "file_type": "rationale",
+      "source_file": "D:\\website-scanner\\AGENTS.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_project",
+      "label": "Next.js project bootstrapped with create-next-app",
+      "file_type": "document",
+      "source_file": "D:\\website-scanner\\README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_getting_started",
+      "label": "Getting Started — run development server: npm run dev / yarn dev / pnpm dev / bun dev",
+      "file_type": "rationale",
+      "source_file": "D:\\website-scanner\\README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_dev_port",
+      "label": "Open http://localhost:3000 to see the result",
+      "file_type": "rationale",
+      "source_file": "D:\\website-scanner\\README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_page_edit",
+      "label": "Edit app/page.tsx directly; page auto-updates as edited",
+      "file_type": "rationale",
+      "source_file": "D:\\website-scanner\\README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_font_optimization",
+      "label": "Uses next/font to automatically optimize and load Geist font family",
+      "file_type": "rationale",
+      "source_file": "D:\\website-scanner\\README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_learn_more",
+      "label": "Learn More resources: Next.js Documentation, Learn Next.js interactive tutorial",
+      "file_type": "rationale",
+      "source_file": "D:\\website-scanner\\README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "readme_deploy_vercel",
+      "label": "Deploy on Vercel Platform — easiest way to deploy this Next.js app",
+      "file_type": "rationale",
+      "source_file": "D:\\website-scanner\\README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "agents_next_api_changes",
+      "target": "agents_read_node_modules_guide",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "D:\\website-scanner\\AGENTS.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "agents_read_node_modules_guide",
+      "target": "agents_heed_deprecation",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "D:\\website-scanner\\AGENTS.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "agents_heed_deprecation",
+      "target": "agents_verify_generate_agent_files",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "D:\\website-scanner\\AGENTS.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "agents_verify_generate_agent_files",
+      "target": "agents_removing_block_recreates_diff",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "D:\\website-scanner\\AGENTS.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "agents_removing_block_recreates_diff",
+      "target": "agents_committing_keeps_tree_clean",
+      "relation": "shares_data_with",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "D:\\website-scanner\\AGENTS.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "agents_next_api_changes",
+      "target": "agents_committing_keeps_tree_clean",
+      "relation": "cites",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "D:\\website-scanner\\AGENTS.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "readme_project",
+      "target": "readme_getting_started",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "D:\\website-scanner\\README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "readme_project",
+      "target": "readme_getting_started",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "D:\\website-scanner\\README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "readme_getting_started",
+      "target": "readme_dev_port",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "D:\\website-scanner\\README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "readme_getting_started",
+      "target": "readme_page_edit",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "D:\\website-scanner\\README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "readme_getting_started",
+      "target": "readme_font_optimization",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "D:\\website-scanner\\README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "readme_font_optimization",
+      "target": "readme_learn_more",
+      "relation": "shares_data_with",
+      "confidence": "INFERRED",
+      "confidence_score": 0.65,
+      "source_file": "D:\\website-scanner\\README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "readme_font_optimization",
+      "target": "readme_page_edit",
+      "relation": "shares_data_with",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "D:\\website-scanner\\README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "readme_learn_more",
+      "target": "readme_deploy_vercel",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "D:\\website-scanner\\README.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "coverage": {
+    "D:\\website-scanner\\AGENTS.md": 9,
+    "D:\\website-scanner\\README.md": 37
+  }
+}

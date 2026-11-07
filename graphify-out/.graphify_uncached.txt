@@ -1,0 +1,7 @@
+D:\website-scanner\AGENTS.md
+D:\website-scanner\README.md
+D:\website-scanner\public\file.svg
+D:\website-scanner\public\globe.svg
+D:\website-scanner\public\next.svg
+D:\website-scanner\public\vercel.svg
+D:\website-scanner\public\window.svg
