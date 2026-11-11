@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { ScanResult, Finding } from "@/lib/types";
-import { computePerformanceScore, computeSeoScore, computeSecurityScore, computeUpliftBenchmark } from "@/components/ResultsDashboard";
+import { computeScores } from "@/lib/scoring";
 
 interface GaugeRingProps {
   label: string;
@@ -55,6 +55,7 @@ export default function UpgradeSimulationPanel({ result }: { result?: ScanResult
   const [expanded, setExpanded] = useState(false);
 
   if (!result || result.findings.length === 0) return null;
+  const { current, projected } = computeScores(result);
 
   const cardsByCategory = new Map<string, Finding[]>();
   for (const f of result.findings) {
@@ -119,35 +120,35 @@ export default function UpgradeSimulationPanel({ result }: { result?: ScanResult
             </div>
           </div>
 
-          {/* Illustrative migration potential — fixed benchmark, NOT derived from this scan. */}
+          {/* Projection = same scoring model applied to this scan with modern-stack signals. */}
           <div className="glass-accent rounded-2xl p-6 mb-4 text-center">
             <span className="inline-block rounded-full border border-[var(--primary)] bg-[var(--primary)]/10 px-3 py-1 font-mono text-xs font-bold uppercase tracking-wider text-[var(--primary)]">
-              Estimated Architectural Benchmark · Simulated Projections
+              Modeled from this scan · Simulated Projection
             </span>
             <div className="mt-4 font-mono text-7xl sm:text-8xl font-extrabold tracking-tighter bg-gradient-to-br from-[var(--primary)] via-cyan-500 to-fuchsia-500 bg-clip-text text-transparent">
-              {computeUpliftBenchmark(result)}%
+              {projected.overall}%
             </div>
             <div className="mt-2 text-xl font-bold text-[var(--heading-text)]">
-              Architectural uplift potential
+              Projected overall score ({projected.overall - current.overall >= 0 ? "+" : ""}{projected.overall - current.overall} vs. today)
             </div>
             <p className="mt-3 mx-auto max-w-md text-sm leading-relaxed text-[var(--muted-text)]">
-              Typical range of 92–98% for legacy sites rebuilt on Next.js with React Server Components,
-              optimized rendering and edge caching. Actual gains depend on the site and must be measured
-              after migration.
+              The same page re-scored with Next.js App Router, React Server Components and Cloudflare edge
+              caching. Content-driven checks (headings, indexability, page weight) are left unchanged, so
+              gains depend on what was scanned and must be measured after migration.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
-            <SectionItem title="Performance" description="Server Components ship less JS; edge caching cuts time to first byte" value={UPLIFT_BENCHMARK.performance} color={PERF_COLOR} />
-            <SectionItem title="SEO & Metadata" description="Server-rendered HTML and per-route metadata crawlers can read" value={UPLIFT_BENCHMARK.seo} color={SEO_COLOR} />
-            <SectionItem title="Security & Architecture" description="Modular components replace plugin-heavy monoliths; smaller attack surface" value={UPLIFT_BENCHMARK.security} color={SECURITY_COLOR} />
+            <SectionItem title="Performance" description="Server Components ship less JS; edge caching cuts time to first byte" value={projected.performance} color={PERF_COLOR} />
+            <SectionItem title="SEO & Metadata" description="Server-rendered HTML and per-route metadata crawlers can read" value={projected.seo} color={SEO_COLOR} />
+            <SectionItem title="Security & Architecture" description="Modular components replace plugin-heavy monoliths; smaller attack surface" value={projected.security} color={SECURITY_COLOR} />
           </div>
 
-          {/* Current = this site's scan score; Projected = fixed benchmark above. */}
+          {/* Current = scan score; Projected = same model with modern-stack signals. */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
             {[
-              { label: "Performance", now: computePerformanceScore(result), next: UPLIFT_BENCHMARK.performance, color: PERF_COLOR },
-              { label: "SEO & Metadata", now: computeSeoScore(result), next: UPLIFT_BENCHMARK.seo, color: SEO_COLOR },
-              { label: "Security & Architecture", now: computeSecurityScore(result), next: UPLIFT_BENCHMARK.security, color: SECURITY_COLOR },
+              { label: "Performance", now: current.performance, next: projected.performance, color: PERF_COLOR },
+              { label: "SEO & Metadata", now: current.seo, next: projected.seo, color: SEO_COLOR },
+              { label: "Security & Architecture", now: current.security, next: projected.security, color: SECURITY_COLOR },
             ].map(({ label, now, next, color }) => (
               <div key={label} className="glass min-w-0 overflow-hidden rounded-xl p-4">
                 <div className="text-sm font-bold uppercase tracking-wide break-words" style={{ color }}>{label}</div>
@@ -177,8 +178,6 @@ export default function UpgradeSimulationPanel({ result }: { result?: ScanResult
   );
 }
 
-// Fixed illustrative per-category figures for client demos. Not computed from scan data.
-const UPLIFT_BENCHMARK = { performance: 97, seo: 96, security: 95 }; // overall comes from computeUpliftBenchmark
 const PERF_COLOR = "#22c55e"; // bright green
 const SEO_COLOR = "#a855f7"; // vivid violet
 const SECURITY_COLOR = "#06b6d4"; // bright cyan

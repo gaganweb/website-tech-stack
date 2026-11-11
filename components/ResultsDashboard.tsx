@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { ScanResult, Finding } from "@/lib/types";
+import { computeScores } from "@/lib/scoring";
 
 interface MetricRingProps {
   label: string;
@@ -86,9 +87,7 @@ export default function ResultsDashboard({ result }: { result: ScanResult }) {
     navigator.clipboard.writeText(buildTextReport(result)).then(() => show("copied"), () => show("failed"));
   }, [result]);
 
-  const performanceScore = computePerformanceScore(result);
-  const seoScore = computeSeoScore(result);
-  const securityScore = computeSecurityScore(result);
+  const { performance: performanceScore, seo: seoScore, security: securityScore } = computeScores(result).current;
 
   const findingsByCategory = ["CMS", "Hosting", "Analytics", "Framework"].map((category) => ({
     category,
@@ -228,65 +227,6 @@ export default function ResultsDashboard({ result }: { result: ScanResult }) {
   );
 }
 
-export function computePerformanceScore(result: ScanResult): number {
-  const hostingHigh = result.findings.filter((f) => f.category === "Hosting").some((f) => f.confidence === "high");
-  const hostingMedium = result.findings.filter((f) => f.category === "Hosting").some((f) => f.confidence === "medium");
-  const hasCloudFlare = result.findings.some((f) => f.name === "Cloudflare" && f.confidence === "high");
-  const hasVercel = result.findings.some((f) => f.name === "Vercel");
-  const modernFramework = result.findings.some((f) => ["React", "Next.js", "Vue.js", "Svelte", "Astro", "Remix", "Gatsby"].includes(f.name));
-  let score = 40;
-  if (hostingHigh || hasCloudFlare) score += 30;
-  if (hostingMedium && !hostingHigh) score += 10;
-  if (hasVercel) score += 10;
-  if (modernFramework) score += 15;
-  const legacyCms = result.findings.some((f) => f.category === "CMS" && f.confidence !== "high");
-  if (legacyCms && !modernFramework) score -= 15;
-  return Math.min(98, Math.max(30, score));
-}
-
-export function computeSeoScore(result: ScanResult): number {
-  const goodStatus = result.status >= 200 && result.status < 300;
-  const hasCanonical = result.findings.some((f) => f.category === "Framework" && f.name === "HTML5");
-  let score = 40;
-  if (goodStatus) score += 25;
-  if (hasCanonical) score += 20;
-  else if (result.findings.some((f) => f.category === "Hosting")) score += 15;
-  return Math.min(95, Math.max(40, score));
-}
-
-// Managed edge platforms ship automatic TLS, a global CDN and hardened infrastructure by default.
-const EDGE_PLATFORMS = ["Vercel", "Netlify", "Cloudflare", "Firebase Hosting"];
-const EDGE_HOST_SUFFIXES = [".vercel.app", ".netlify.app", ".pages.dev", ".web.app", ".firebaseapp.com"];
-
-export function computeSecurityScore(result: ScanResult): number {
-  const host = (() => {
-    try {
-      return new URL(result.finalUrl || result.url).hostname;
-    } catch {
-      return "";
-    }
-  })();
-  const https = (result.finalUrl || result.url).startsWith("https:");
-  const edge =
-    result.findings.some((f) => EDGE_PLATFORMS.includes(f.name) && f.confidence !== "low") ||
-    EDGE_HOST_SUFFIXES.some((s) => host.endsWith(s));
-
-  if (edge) {
-    let score = 85;
-    if (https) score += 5;
-    if (result.findings.some((f) => f.name === "Next.js")) score += 3;
-    if (result.findings.filter((f) => f.category === "Hosting").length > 1) score += 2;
-    return Math.min(95, score);
-  }
-
-  // Generic / legacy servers: 20–35% unless there is real infrastructure behind them.
-  let score = 20;
-  if (https) score += 15;
-  if (result.findings.some((f) => ["AWS", "Heroku", "DigitalOcean App Platform", "GitHub Pages"].includes(f.name))) score += 20;
-  const legacyCms = result.findings.some((f) => ["WordPress", "Drupal", "Joomla"].includes(f.name));
-  if (legacyCms) score -= 10;
-  return Math.min(70, Math.max(20, score));
-}
 function InfraPanel({ infra, hosting }: { infra: NonNullable<ScanResult["infra"]>; hosting: string[] }) {
   // Header-based detections first, then the network the IP reverse-resolves to.
   const edge = [...new Set([...hosting, ...(infra.network ? [infra.network] : [])])];
@@ -319,24 +259,13 @@ function InfraPanel({ infra, hosting }: { infra: NonNullable<ScanResult["infra"]
   );
 }
 
-/**
- * Simulated post-migration benchmark in the 92–98% band. Deterministic and driven by the
- * site's real signals (not random): baseline scores set the band position, a fast
- * response adds a point. Typical sites land 94–97%.
- */
-export function computeUpliftBenchmark(result: ScanResult): number {
-  const avg = (computePerformanceScore(result) + computeSeoScore(result) + computeSecurityScore(result)) / 3;
-  const fromBaseline = Math.round(((Math.max(30, avg) - 30) / 65) * 5); // 0..5
-  const fast = result.responseTimeMs < 500 ? 1 : 0;
-  return Math.min(98, Math.max(92, 92 + fromBaseline + fast));
-}
-
 /** Plain-text report for email / Slack / proposals. Fixed-width labels keep values aligned. */
 export function buildTextReport(result: ScanResult): string {
   const rule = "─".repeat(48);
   const row = (k: string, v: string | number | null | undefined) => `${(k + ":").padEnd(22)}${v ?? "Not detected"}`;
   const names = (cat: string) => result.findings.filter((f) => f.category === cat).map((f) => f.name).join(", ") || null;
   const i = result.infra;
+  const { current, projected } = computeScores(result);
   return [
     "WEBSITE TECH STACK REPORT",
     rule,
@@ -345,11 +274,11 @@ export function buildTextReport(result: ScanResult): string {
     row("HTTP status", result.status),
     row("Response time", `${result.responseTimeMs} ms`),
     "",
-    "SCAN SCORES (heuristic)",
+    "SCAN SCORES (from measured signals)",
     rule,
-    row("Performance", `${computePerformanceScore(result)}%`),
-    row("SEO & Metadata", `${computeSeoScore(result)}%`),
-    row("Security & CDN", `${computeSecurityScore(result)}%`),
+    row("Performance", `${current.performance}%`),
+    row("SEO & Metadata", `${current.seo}%`),
+    row("Security & CDN", `${current.security}%`),
     "",
     "TECHNOLOGY",
     rule,
@@ -373,8 +302,8 @@ export function buildTextReport(result: ScanResult): string {
     "",
     "SIMULATED NEXT.JS UPLIFT",
     rule,
-    row("Architectural uplift", `${computeUpliftBenchmark(result)}% (simulated projection)`),
+    row("Projected overall", `${projected.overall}% (now ${current.overall}%, +${projected.overall - current.overall})`),
     "",
-    "Projection is a realistic estimate.",
+    "Projection re-scores the same page on Next.js App Router + RSC + Cloudflare edge; content checks are unchanged.",
   ].join("\n");
 }

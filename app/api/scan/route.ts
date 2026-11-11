@@ -33,6 +33,7 @@ export async function POST(request: Request) {
       status: analysis.status,
       responseTimeMs: analysis.responseTimeMs,
       findings: analysis.findings,
+      signals: analysis.signals,
       infra: analysis.infra,
       scannedAt: new Date().toISOString(),
     };

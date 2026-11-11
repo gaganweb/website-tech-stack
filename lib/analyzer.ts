@@ -1,5 +1,6 @@
 import { getInfra, type Infra } from "@/lib/infra";
-import type { Finding, Confidence, Category } from "@/lib/types";
+import { extractSignals } from "@/lib/signals";
+import type { Finding, Confidence, Category, Signals } from "@/lib/types";
 
 interface DetectorMatchResult {
   confidence: Confidence;
@@ -422,6 +423,7 @@ export function runDetectors(headers: Headers, html: string): Finding[] {
 /** Result produced by `analyzeUrl` for a fetched URL — findings plus response metadata. */
 export interface AnalyzeResult {
   findings: Finding[];
+  signals: Signals;
   finalUrl: string;
   status: number;
   responseTimeMs: number;
@@ -464,6 +466,7 @@ export async function analyzeUrl(url: string): Promise<AnalyzeResult> {
 
     const result: AnalyzeResult = {
       findings: runDetectors(response.headers, html),
+      signals: extractSignals(response.headers, html, response.url),
       infra: await getInfra(response.url, response.headers.get("server") ?? response.headers.get("x-powered-by")),
       finalUrl: response.url,
       status: response.status,
